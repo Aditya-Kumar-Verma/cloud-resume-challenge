@@ -3,17 +3,18 @@ import os
 
 print("Loading function...")
 
-table_name = os.environ.get("TABLE_NAME")
-print(f"Using table name: {table_name}")
-
-dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table(table_name)
-
 def lambda_handler(event, context):
     # print("Lambda handler started")
     print("Lambda invoked")
     # print(f"Incoming event: {event}")
     try:
+        
+        table_name = os.environ.get("TABLE_NAME")
+        print(f"Using table name: {table_name}")
+
+        dynamodb = boto3.resource("dynamodb")
+        table = dynamodb.Table(table_name)
+        
         response = table.update_item(
             Key={"id": "visitorCount"},
             UpdateExpression="ADD #c :inc",
