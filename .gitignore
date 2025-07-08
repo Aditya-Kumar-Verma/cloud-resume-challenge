@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.env.*
+
+# AWS SAM build artifacts
+.aws-sam/
+samconfig.toml
+
+# VS Code
+.vscode/
+
+# macOS and Windows
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Node / frontend cache (if you add frontend tools later)
+node_modules/
+
+# Test outputs
+.coverage
+*.egg-info/
+
+# GitHub workflows secrets (if any)
+secrets.env
+"env.json" 

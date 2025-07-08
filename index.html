@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Kumar Verma | Resume</title>
+    <!-- Google Fonts: Roboto for Header, Inter for Body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for general icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Devicon for technology icons -->
+    <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <style>
+        /* --- Global Styles & Typography --- */
+        :root {
+            --primary-text: #111827;
+            --secondary-text: #4b5563;
+            --accent-bg: #e0f2fe;
+            --accent-text: #0c4a6e;
+            --bg-color: #ffffff;
+            --border-color: #e5e7eb;
+            --page-bg: #f9fafb;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--page-bg);
+            color: var(--secondary-text);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { color: var(--primary-text); font-weight: 600; }
+        a { color: var(--primary-text); text-decoration: none; transition: opacity 0.3s ease; }
+        a:hover { opacity: 0.8; }
+        
+        /* --- Redesigned Sticky Header --- */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2rem 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .download-btn {
+            background-color: var(--accent-text);
+            color: var(--bg-color);
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background-color: #155e75;
+        }
+
+        .header-left-group { display: flex; align-items: center; gap: 3rem; }
+        .profile-image-wrapper { position: relative; flex-shrink: 0; }
+        .profile-image-wrapper::before { content: ''; position: absolute; top: -12px; left: -12px; width: 100%; height: 100%; border: 1.5px solid var(--border-color); z-index: -1; border-radius: 8px; }
+        .profile-image { width: 140px; height: 140px; object-fit: cover; border-radius: 8px; display: block; }
+        .header-text-block h1 { font-family: 'Roboto', sans-serif; font-size: 3.5rem; font-weight: 900; margin: 0; line-height: 1.1; color: var(--primary-text); }
+        .header-text-block .job-title { font-size: 1rem; font-weight: 500; margin: 0.75rem 0 0 0; color: var(--secondary-text); text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .social-icons {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start; /* Default for desktop: left-aligned */
+}
+
+        .social-icons a, .social-icons .icon-item { display: inline-block; transition: transform 0.2s ease; }
+        .social-icons a:hover, .social-icons .icon-item:hover { transform: scale(1.1); }
+        .social-icons .svg-icon { height: 32px; width: 32px; vertical-align: middle; }
+        
+        /* --- Generic Icon with Tooltip (Updated) --- */
+        .icon-item {
+            position: relative;
+            cursor: pointer;
+            display: inline-block; /* Ensures the wrapper fits the icon */
+        }
+
+        .icon-tooltip {
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-text);
+            color: var(--bg-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .icon-item:hover .icon-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .print-button { background: none; border: none; cursor: pointer; font-size: 1.75rem; color: var(--secondary-text); transition: color 0.2s ease; margin-left: 2rem; }
+        .print-button:hover { color: var(--primary-text); }
+
+        
+        /* --- Main Content --- */
+        .main-content-wrapper { max-width: 1600px; margin: 2rem auto; background-color: var(--bg-color); padding: 2.5rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); }
+        .section-title {
+            font-family: Cambria, 'Georgia', 'Times New Roman', serif; /* MODIFIED: Font Changed */
+            font-size: 1.9rem; /* MODIFIED: Font Size Increased */
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 3rem; /* This adds space between sections */
+            margin-bottom: 2.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e0f2fe;
+        }
+        .two-column-container { display: flex; gap: 3rem; }
+        .left-content, .right-content { width: 50%; }
+        .full-width-section { max-width: 950px; margin-left: auto; margin-right: auto; }
+        
+        .item { margin-bottom: 2rem; }
+        .item-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.25rem; }
+        .item-header h3 { margin: 0; font-size: 1.1rem; }
+        .item-date { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 500; }
+        .item-details .company { margin: 0 0 1rem 0; font-weight: 500; font-style: italic; }
+        .item-details p { margin: 0; }
+        .item-description { padding-left: 1.25rem; margin: 0; font-size: 1rem; }
+        .item-description li { margin-bottom: 0.7rem; }
+        
+        .tags-container { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+        .tag { background-color: var(--accent-bg); color: var(--accent-text); padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.9rem; font-weight: 500; }
+        
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 2.5rem; }
+        .skill-item { display: flex; flex-direction: column; align-items: center; text-align: center; transition: transform 0.2s ease-in-out; }
+        .skill-item:hover { transform: scale(1.05); }
+        .skill-item img { height: 60px; width: auto; margin-bottom: 1rem; }
+        .skill-item p { margin: 0; font-weight: 500; color: var(--primary-text); }
+
+        .cert-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .cert-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 1.5rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; }
+        .cert-item img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 1rem; }
+        .cert-item p { margin: 0.25rem 0; font-size: 0.9rem; }
+        .cert-item p b { color: var(--primary-text); }
+        .cert-item a { display: inline-block; margin-top: 0.75rem; padding: 0.5rem 1.5rem; background-color: var(--accent-text); color: var(--bg-color); border-radius: 9999px; font-weight: 500; font-size: 0.8rem; text-decoration: none; }
+        
+        @media (max-width: 1024px) {
+            .sticky-header { padding: 1.5rem; }
+            .header-content { flex-direction: column; text-align: center; gap: 1.5rem; }
+            .header-left-group { flex-direction: column; }
+            .print-button { position: absolute; top: 1.5rem; right: 1.5rem; }
+        }
+     /* Two-column layout on desktop */
+.two-column-container {
+  display: flex;
+  gap: 3rem;
+  justify-content: space-between;
+}
+
+/* Equal width for left and right columns */
+.left-content,
+.right-content {
+  width: 48%;
+}
+
+/* Mobile responsive stacking (below 992px) */
+@media (max-width: 992px) {
+  .two-column-container {
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .left-content,
+  .right-content {
+    width: 100%;
+  }
+}
+
+        /* --- Custom Style for Link Icons --- */
+        .link-icon {
+            font-size: 0.8em; /* Makes the icon slightly smaller than the text */
+            opacity: 0.6;     /* Makes it a bit more subtle */
+            vertical-align: middle;
+            margin-left: 0.35rem; /* Adds a little space next to the text */
+            transition: opacity 0.2s ease;
+        }
+        .link-icon:hover {
+            opacity: 1;
+        }
+
+/* Rounded card container */
+.visitor-card {
+  background-color: #ffffff;  /* Same as section background */
+  border-radius: 1rem;
+  padding: 1.25rem 2rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);  /* Soft shadow */
+  text-align: center;
+  width: 100%;
+  transition: transform 0.2s ease;
+}
+
+.visitor-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Heading + text styling */
+.visitor-heading {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.3rem;
+}
+
+.visitor-subtext {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+.visitor-number {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #3b82f6; /* Tailwind blue-500 */
+  margin: 0;
+}
+
+
+
+/* Matches light gray background like above Education section */
+.seamless-section {
+  background-color: #f3f4f6; /* or use #f9fafb depending on exact shade */
+  padding: 2rem 1rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.visitor-card {
+  max-width: 700px;
+  width: 100%;
+}
+
+.visitor-section {
+  text-align: center;
+  max-width: 650px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .sticky-header {
+    transition: all 0.3s ease;
+    padding: 1.5rem 1.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .social-icons {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media print {
+  .seamless-section {
+    display: none !important;
+  }
+}
+
+  .sticky-header.shrink {
+    padding: 0.6rem 1rem;
+  }
+
+  .sticky-header.shrink .profile-image {
+    width: 64px;
+    height: 64px;
+  }
+
+  .sticky-header.shrink .header-text-block h1 {
+    font-size: 1.5rem;
+  }
+
+  .sticky-header.shrink .job-title {
+    font-size: 0.75rem;
+  }
+
+  .sticky-header.shrink .social-icons .svg-icon {
+    height: 24px;
+    width: 24px;
+  }
+
+footer {
+  background-color: #ffffff; /* Pure white background for contrast on desktop */
+  text-align: center;
+  padding: 2rem 1rem 0.5rem;
+  font-family: 'Inter', sans-serif;
+  border-top: 1px solid #e5e7eb; /* optional for visual separation */
+}
+
+.quote-section {
+  margin-bottom: 2rem;
+}
+
+.quote {
+  font-style: italic;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto;
+  color: #4b5563;
+}
+
+.goodbye {
+  font-size: 2rem;
+  margin-top: 1rem;
+  color: #4b5563;
+  font-weight: 300;
+}
+
+.goodbye strong {
+  font-weight: 700;
+  color: #374151;
+}
+
+.footer-bar {
+  background-color: #1f2937; /* Tailwind's gray-900 */
+  color: white;
+  padding: 1rem 0;
+  font-size: 0.875rem;
+  margin-top: 2rem;
+}
+
+@media print {
+  body {
+    background-color: white;
+    color: #000;
+    font-size: 0.9rem;
+  }
+
+  header, footer, .print-button, .seamless-section {
+    display: none !important;
+  }
+
+  .main-content-wrapper {
+    box-shadow: none;
+    padding: 1.5rem;
+  }
+
+  .two-column-container {
+    display: block;
+  }
+
+  .left-content,
+  .right-content {
+    width: 100%;
+  }
+
+  h1, h2, h3 {
+    color: #000;
+  }
+
+  .item-header,
+  .item-details,
+  .item-description {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .sticky-header {
+    position: relative !important;  /* Remove sticky for printing */
+    background: transparent !important;
+    padding: 1rem !important;
+    display: block !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .print-button {
+    display: none !important;  /* Don't print the print icon */
+  }
+
+  .seamless-section,
+  .footer-bar,
+  footer {
+    display: none !important;  /* Hide visitor counter and footer in print */
+  }
+
+  .skills-grid,
+  .cert-container,
+  .tags-container {
+    page-break-inside: avoid;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 0.8rem;
+    color: gray;
+  }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- STICKY HEADER -->
+    <header class="sticky-header">
+        <div class="header-content">
+            <div class="header-left-group">
+                <div class="profile-image-wrapper">
+                    <img src="https://i.ibb.co/jk8PL2W7/PASSPORT-PHOTO-3.jpg" alt="Aditya Kumar Verma" class="profile-image">
+                </div>
+                <div class="header-text-block">
+                    <h1>Aditya Kumar Verma</h1>
+                    <p class="job-title">Enthusiastic recent graduate with a solid foundation in Cloud Computing.</p>
+                    <div class="social-icons">
+                        <!-- Corrected Phone Icon with Tooltip -->
+                        <div class="icon-item" title="Phone">
+                            <img src="https://i.ibb.co/q3KYk92b/Screenshot-2025-06-16-182856.png" alt="Phone Icon" class="svg-icon">
+                            <span class="icon-tooltip">+91 9598309123</span>
+                        </div>
+                        
+                        <!-- Corrected Gmail Icon with Tooltip -->
+                        <a href="mailto:adityakr3902@gmail.com" title="Email" aria-label="Email Aditya">
+                           <div class="icon-item">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail Logo" class="svg-icon">
+                                <span class="icon-tooltip">adityakr3902@gmail.com</span>
+                           </div>
+                        </a>
+                        
+                        <!-- Corrected LinkedIn Icon -->
+                        <a href="https://linkedin.com/in/aditya-kumar-verma3" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="LinkedIn Profile">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linkedin/linkedin-original.svg" alt="LinkedIn Logo" class="svg-icon">
+                        </a>
+                        
+                        <!-- GitHub Icon (Unchanged) -->
+                        <a href="https://github.com/Aditya-Kumar-Verma" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="GitHub Profile">
+
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo" class="svg-icon">
+                        </a>
+                    </div>
+                </div>
+            </div>
+  <!-- RIGHT: Print Button -->
+<button onclick="window.print()" class="print-button icon-item" aria-label="Print">
+  <i class="fas fa-print"></i>
+  </button>
+
+        </div>
+    </header>
+
+<!-- VISITOR COUNTER SECTION -->
+<section class="seamless-section">
+  <div class="visitor-card">
+    <p class="visitor-heading">Cloud Resume Challenge</p>
+    <p class="visitor-subtext">Visitor Count:</p>
+    <p class="visitor-number" id="visitor-count">Loading...</p>
+ </div>
+</section>
+
+    <!-- MAIN SCROLLING CONTENT -->
+    <main class="main-content-wrapper">
+
+        <!-- EDUCATION (Single Column) -->
+        <section class="content-section full-width-section">
+            <h2 class="section-title" style="text-align: left; margin-top: 0;">Education</h2>
+            <div class="item">
+                <div class="item-header"><h3>B.Tech in Computer Science</h3><span class="item-date">11/2020 - 12/2024</span></div>
+                <div class="item-details"><p class="company">Dr. A.P.J. Abdul Kalam Technical University · Lucknow, India</p></div>
+            </div>
+        </section>
+
+        <!-- TWO COLUMN CONTENT AREA -->
+        <div class="two-column-container">
+            <div class="left-content">
+               <h2 class="section-title">Work Experience</h2>
+                <!-- Work Experience Items -->
+                <div class="item">
+                    <div class="item-header"><h3>Technical Intern (HR-IT Operations)</h3><span class="item-date">11/2024 - 01/2025</span></div>
+                    <div class="item-details"><p class="company"><a href="https://www.nestle.com/" target="_blank" rel="noopener noreferrer">Nestle</a> · Gurugram, India</p>
+<ul class="item-description">
+<li>Spearheaded the development of a conceptual app to enhance employee productivity, projected to improve efficiency by 15-20% in day-to-day tasks across various departments.</li>
+<li>Designing optimized app features to address employee pain points, streamlining workflows, and saving an estimated 10-12 hours/month per employee.</li>
+<li>Collaborated with IT, HR, and operations teams to integrate feedback into app design, enhancing usability and adoption potential across departments.</li></ul></div>
+                </div>
+                <div class="item">
+                    <div class="item-header"><h3>AWS Summer Intern</h3><span class="item-date">07/2023 - 10/2023</span></div>
+                    <div class="item-details"><p class="company"><a href="https://www.linuxworldindia.org/" target="_blank" rel="noopener noreferrer">LinuxWorld Informatics Pvt. Ltd.</a> · Jaipur, India</p>
+<ul class="item-description">
+<li>Implemented knowledge and skills to successfully complete projects involving Docker, Kubernetes, Ansible, Jenkins, and Terraform.</li>
+<li>Monitored AWS environments with CloudWatch, leading incident resolution efforts and reducing downtime by 30%.</li>
+<li>Troubleshot infrastructure issues using Linux system tools and Terraform, significantly improving system reliability.</li>
+</ul></div>
+                </div>
+                <div class="item">
+                    <div class="item-header"><h3>Cloud Computing Trainee</h3><span class="item-date">03/2023 - 06/2023</span></div>
+                    <div class="item-details"><p class="company"><a href="https://www.linkedin.com/company/learnandbuild/" target="_blank" rel="noopener noreferrer">Learn and Build</a> · (Remote)</p>
+<ul class="item-description">
+<li>Perfected foundational knowledge of cloud computing, including understanding different cloud types.</li>
+<li>Deployed enterprise-level applications on Amazon Web Services (AWS), leveraging EC2, S3, EKS and VPC.</li>
+<li>Composed Python scripts to automate processes, enhancing workflow efficiency and reducing manual effort.</li>
+</ul>
+</div>
+                </div>
+            </div>
+            <div class="right-content">
+               <h2 class="section-title">Projects</h2>
+                  <!-- Project Items -->
+                <div class="item">
+                    <div class="item-header"><h3>Truth Detector</h3><span class="item-date">11/2023 - 05/2024</span></div>
+                    <div class="item-details"><ul class="item-description"><li>Developed a method for detecting fake news by applying Python, Streamlit, and machine learning (logistic regression) to evaluate the authenticity of news articles.</li><li>Applied advanced algorithms in Python for optimizing the automation tasks, improving system performance by 20%.</li><li>Addressed the challenge of fake news, including intentionally misleading content and factually incorrect articles driven by profit. Achieved an accuracy score of 95.563 %.</li></ul></div>
+                </div>
+                <div class="item">
+                    <div class="item-header"><h3>Textractor</h3><span class="item-date">07/2023 - 09/2023</span></div>
+                    <div class="item-details"><ul class="item-description"><li>Designed a solution using Boto3 and Amazon Textract to automate text extraction from scanned documents.</li><li>Implemented a comprehensive system for extracting text, tables, and form data from over 1000 PDFs and images, integrating with AWS services to enhance processing speed.</li></ul></div>
+                </div>
+                <div class="item">
+                    <div class="item-header"><h3>CI/CD Pipelining using Jenkins and GitHub</h3><span class="item-date">03/2023 - 06/2023</span></div>
+                    <div class="item-details"><ul class="item-description"><li>Automated a CI/CD Pipeline using Jenkins and GitHub to automate builds, tests, and deployments.</li><li>Integrated testing and code analysis improves code quality and reduces deployment times while enhancing collaboration and project efficiency.</li><li>Deployed project builds and dependencies using Maven for seamless CI/CD integration.</li></ul></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SKILLS (Single Column) -->
+        <section class="content-section full-width-section">
+            <h2 class="section-title">Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS Logo"><p>Amazon Web Services</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" alt="Google Cloud Logo"><p>Google Cloud</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python Logo"><p>Python</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt="Linux Logo"><p>Linux</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker Logo"><p>Docker</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" alt="Kubernetes Logo"><p>Kubernetes</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/terraform/terraform-original.svg" alt="Terraform Logo"><p>Terraform</p></div>                
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Go Logo"><p>Go</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" alt="Jenkins Logo"><p>Jenkins</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git Logo"><p>Git</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub Logo"><p>GitHub</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL Logo"><p>MySQL</p></div>
+                <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash Logo"><p>Bash</p></div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATIONS (Single Column) -->
+        <section class="content-section full-width-section">
+            <h2 class="section-title">Certifications</h2>
+            <div class="cert-container">
+                <div class="cert-item"><img src="https://i.ibb.co/j9yMkMzx/OCID2023-CP-removebg-preview.png" alt="Oracle Developer Badge"><p><b>Oracle Certified Developer Professional</b></p><p>Issued 07/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=982B48DC06B7D5CBB4CA2BEE7340AAC137F5131A508B7724F823B40E635816BC" target="_blank">Verify</a></div>
+                <div class="cert-item"><img src="https://i.ibb.co/wZ4JVCBm/OCI2023-CAA-removebg-preview.png" alt="Oracle Architect Badge"><p><b>Oracle Certified Architect Associate</b></p><p>Issued 07/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=E5FA2B13013E107047DBE709A52DDD8EB0A225F1D9335EA9A5671B78F0192ACB" target="_blank">Verify</a></div>
+                <div class="cert-item"><img src="https://i.ibb.co/R4vsgpBw/OCIF2023-CA-removebg-preview.png" alt="Oracle Foundations Badge"><p><b>Oracle Certified Foundations Associate</b></p><p>Issued 06/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=44F24CA7EFA4CF0E816CF7F44AFAD08166B756F4CF0D69E7985087844BD4D413" target="_blank">Verify</a></div>
+                <div class="cert-item"><img src="https://i.ibb.co/JRvm7s91/GOOGLE-LOGO.png" alt="Google Cloud Badge"><p><b>Cloud Engineering with Google Cloud</b></p><p>Issued 11/2023</p><a href="https://drive.google.com/file/d/1yyQ9sgsY9S3oswgp-yhIOQPFQqVe4dDG/view?usp=sharing" target="_blank">Verify</a></div>
+            </div>
+        </section>
+        
+        <!-- ACHIEVEMENTS (Single Column) -->
+        <section class="content-section full-width-section">
+            <h2 class="section-title">Achievements</h2>
+            <div class="item">
+                <div class="item-header">
+                    <h3>Best Project Award <a href="https://www.linkedin.com/posts/aditya-kumar-verma3_bestprojectaward-csechampions-team-activity-7205094803385073664-n14A?utm_source=share&utm_medium=member_desktop&rcm=ACoAADKgkpoBZtSNYqk6mM1tH9FHKEKTMcRtgV8" target="_blank" rel="noopener noreferrer" title="View Proof"><i class="fa-solid fa-link link-icon"></i></a></h3>
+                    <span class="item-date">05/2024</span>
+                </div>
+                <div class="item-details">
+                    <p>Proactively led a team of four in developing the 'Truth Detector' project during my final year, demonstrating strong problem-solving skills & innovative thinking, which earned recognition for our collaborative success.</p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-header">
+                    <h3>Best Anchor Award <a href="https://i.ibb.co/Z6PFr5SH/Screenshot-2025-06-16-222237.png" target="_blank" rel="noopener noreferrer" title="View Proof"><i class="fa-solid fa-link link-icon"></i></a></h3>
+                    <span class="item-date">08/2022</span>
+                </div>
+                <div class="item-details">
+                    <p>Received the Best Anchor Award at Rhythm Divine '22, the flagship annual cultural event of our college, demonstrating strong public speaking, leadership, and event coordination skills.</p>
+                </div>
+            </div>
+            <div class="item">
+                <div class="item-header">
+                    <h3>House Captain</h3>
+                    <span class="item-date">2019 - 2020</span>
+                </div>
+                <div class="item-details">
+                    <p>Demonstrated leadership by effectively managing team responsibilities as House Captain, showcasing skills in collaboration, communication, and conflict resolution.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOBBIES (Single Column) -->
+        <section class="content-section full-width-section">
+            <h2 class="section-title">Hobbies</h2>
+            <div class="tags-container" style="justify-content: center;">
+                <span class="tag">Driving</span><span class="tag">Travelling</span><span class="tag">Yoga</span>
+                <span class="tag">Badminton</span><span class="tag">Tech Blogging</span>
+                <span class="tag">Attending Meetups</span><span class="tag">Photography</span>
+            </div>
+        </section>
+        
+        <!-- Visitor Counter Script -->
+        <script>
+          fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("visitor-count").innerText = data.count;
+             })
+            .catch(error => {
+              console.error("Error fetching visitor count:", error);
+              document.getElementById("visitor-count").innerText = "Unavailable";
+            });
+        </script>
+
+    </main>
+
+<script>
+  window.addEventListener("scroll", function () {
+  const header = document.querySelector(".sticky-header");
+  if (window.scrollY > 50) {
+    header.classList.add("shrink");
+  } else {
+    header.classList.remove("shrink");
+  }
+});
+
+</script>
+
+<!-- Motivational Footer -->
+<footer>
+  <div class="quote-section">
+    <p class="quote">“Technology is anything that wasn’t around when you were born.” – Alan Kay</p>
+    <h2 class="goodbye">Have a <strong>nice day!</strong></h2>
+  </div>
+  <div class="footer-bar">
+    <p>© 2025 Aditya Kumar Verma. All rights reserved.</p>
+  </div>
+</footer>
+
+
+</body>
+</html>

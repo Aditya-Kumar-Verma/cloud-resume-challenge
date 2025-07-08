@@ -1,0 +1,177 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cloud-resume-challenge
+
+Globals:
+  Function:
+    Timeout: 30
+    LoggingConfig:
+      LogFormat: JSON
+
+Resources:
+
+  MyCloudWebsite:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: my-challenge-to-cloud23
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  MyCloudWebsitePolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyCloudWebsite
+      PolicyDocument:
+        Id: MyPolicy
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Sub "arn:aws:s3:::${MyCloudWebsite}/*"
+
+  MyDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:664418983304:certificate/ff5bcee2-5584-40c1-bfcf-5a1c4380337c
+          SslSupportMethod: sni-only
+        Aliases:
+          - aditya-dev.tech
+          - www.aditya-dev.tech
+        Origins:
+          - DomainName: my-challenge-to-cloud23.s3-website.ap-south-1.amazonaws.com
+            Id: MyS3Origin
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+          TargetOriginId: MyS3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 0
+          MinTTL: 0
+          MaxTTL: 0
+          ForwardedValues:
+            QueryString: false
+
+  MyRoute53Record:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: Z0752974F77493ZA2N2S
+      RecordSets:
+        - Name: aditya-dev.tech
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt MyDistribution.DomainName
+        - Name: www.aditya-dev.tech
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2
+            DNSName: !GetAtt MyDistribution.DomainName
+
+  VisitorTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: visitorCountTable
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: hello_world/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: visitorCountTable
+      Environment:
+        Variables:
+          TABLE_NAME: visitorCountTable
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+        VisitorCounter:
+          Type: Api
+          Properties:
+            Path: /visitors
+            Method: get
+
+  PutVisitorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: put_visitor/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: visitorCountTable
+      Environment:
+        Variables:
+          TABLE_NAME: visitorCountTable
+      Events:
+        VisitorCounterUpdate:
+          Type: Api
+          Properties:
+            Path: /visitors
+            Method: put
+          
+  GetVisitorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_visitor/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Environment:
+        Variables:
+          TABLE_NAME: visitorCountTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: visitorCountTable
+      Events:
+        GetVisitorAPI:
+          Type: Api
+          Properties:
+            Path: /visitors
+            Method: GET         
+
+Outputs:
+
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+
+  VisitorApi:
+    Description: API Gateway endpoint URL for visitor counter
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/visitors"
+
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value: !GetAtt HelloWorldFunction.Arn
+
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value: !GetAtt HelloWorldFunctionRole.Arn
+
+  WebsiteURL:
+    Description: S3 Static Website Hosting URL
+    Value: !GetAtt MyCloudWebsite.WebsiteURL
