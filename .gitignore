@@ -30,3 +30,12 @@ node_modules/
 # GitHub workflows secrets (if any)
 secrets.env
 "env.json" 
+
+# Sensitive Files
+index.html
+template.yaml
+events/
+aws-vault
+.env
+"index.html" 
+"template.yaml" 
