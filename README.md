@@ -106,6 +106,9 @@ You can find more information and examples about filtering Lambda function logs 
 
 Tests are defined in the `tests` folder in this project. Use PIP to install the test dependencies and run tests.
 
+![Test](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
+
+
 ```bash
 cloud-resume-challenge$ pip install -r tests/requirements.txt --user
 # unit test
