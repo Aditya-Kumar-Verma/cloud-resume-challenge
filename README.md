@@ -1,4 +1,12 @@
-# cloud-resume-challenge
+# ☁️ Cloud Resume Challenge
+
+![CI Tests](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
+![AWS](https://img.shields.io/badge/AWS-Lambda-orange?logo=amazonaws)
+![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-blueviolet?logo=amazonaws)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-2088FF?logo=githubactions)
+![Last Commit](https://img.shields.io/github/last-commit/Aditya-Kumar-Verma/cloud-resume-challenge)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Aditya-Kumar-Verma.cloud-resume-challenge)
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
@@ -131,3 +139,8 @@ sam delete --stack-name "cloud-resume-challenge"
 See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
 
 Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+
+![License](https://img.shields.io/github/license/Aditya-Kumar-Verma/cloud-resume-challenge)
+![Repo Size](https://img.shields.io/github/repo-size/Aditya-Kumar-Verma/cloud-resume-challenge)
+![Issues](https://img.shields.io/github/issues/Aditya-Kumar-Verma/cloud-resume-challenge)
+
