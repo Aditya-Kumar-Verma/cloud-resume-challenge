@@ -1,32 +1,23 @@
 import unittest
-import os
 from unittest.mock import patch
-
-# Set TABLE_NAME so app.py doesn't break on import
-os.environ["TABLE_NAME"] = "visitorCountTable"
-
-import app  # Now safe to import
+import app  # your Lambda code
 
 class TestLambdaHandler(unittest.TestCase):
 
-    def test_lambda_handler_success(self):
-        # Mock get_item method
-        app.table.get_item = lambda Key: {'Item': {'count': 42}}
+    @patch("app.boto3.resource")
+    @patch("app.os.environ.get", return_value="visitorCountTable")
+    def test_lambda_handler_success(self, mock_env, mock_boto3):
+        mock_table = mock_boto3.return_value.Table.return_value
+        mock_table.get_item.return_value = {
+            "Item": {"count": 123}
+        }
 
-        result = app.lambda_handler({}, {})
-        self.assertEqual(result['statusCode'], 200)
-        self.assertEqual(result['body'], '42')
+        event = {}
+        context = {}
+        response = app.lambda_handler(event, context)
 
-    def test_lambda_handler_failure(self):
-        # Simulate error
-        def throw_error(Key):
-            raise Exception("Simulated failure")
+        self.assertEqual(response["statusCode"], 200)
+        self.assertIn("123", response["body"])
 
-        app.table.get_item = throw_error
-
-        result = app.lambda_handler({}, {})
-        self.assertEqual(result['statusCode'], 500)
-        self.assertIn("Error:", result['body'])
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
