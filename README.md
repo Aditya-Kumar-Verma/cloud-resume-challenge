@@ -1,31 +1,18 @@
 # ☁️ Cloud Resume Challenge
 
-![CI Tests](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
-![AWS](https://img.shields.io/badge/AWS-Lambda-orange?logo=amazonaws)
-![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-blueviolet?logo=amazonaws)
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-2088FF?logo=githubactions)
-![Last Commit](https://img.shields.io/github/last-commit/Aditya-Kumar-Verma/cloud-resume-challenge)
-![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Aditya-Kumar-Verma.cloud-resume-challenge)
-
-
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automation-2088FF?logo=githubactions)
-
 ![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-orange?logo=aws-lambda)
 ![Amazon API Gateway](https://img.shields.io/badge/AWS-API--Gateway-purple?logo=amazonaws)
-![Amazon DynamoDB](https://img.shields.io/badge/AWS-DynamoDB-blueviolet?logo=amazon-dynamodb)
+![DynamoDB](https://img.shields.io/badge/AWS-DynamoDB-blueviolet?logo=amazonaws)
 ![AWS CloudFormation](https://img.shields.io/badge/AWS-CloudFormation-orange?logo=aws)
 ![AWS SAM](https://img.shields.io/badge/AWS-SAM-blue?logo=aws)
-
-![VS Code](https://img.shields.io/badge/Editor-VSCode-blue?logo=visualstudiocode)
 ![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker&logoColor=white)
 ![Pytest](https://img.shields.io/badge/Pytest-Testing-blue?logo=pytest)
-
-
+![CI Tests](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automation-2088FF?logo=githubactions)
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
