@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Put Visitor tests
         run: |
-          cd put_visitor
+          cd ../put_visitor
           python test_app.py
 
   deploy-infra:
@@ -41,15 +41,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.11 for SAM
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-
-      - name: Install Python 3.11 explicitly in SAM env
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3.11 python3.11-venv python3.11-dev
 
       - name: Set up AWS SAM CLI
         uses: aws-actions/setup-sam@v1
@@ -61,8 +56,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
 
-      - name: Build with SAM
-        run: sam build --template-file template.yaml
+      - name: Build with SAM using container
+        run: sam build --template-file template.yaml --use-container
 
       - name: Deploy with SAM
         run: sam deploy --template-file template.yaml --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cloud-resume-challenge --capabilities CAPABILITY_IAM
