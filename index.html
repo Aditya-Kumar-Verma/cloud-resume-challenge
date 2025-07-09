@@ -617,18 +617,15 @@ footer {
         <!-- Visitor Counter Script -->
         <script>
           fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors")
-          .then(response => {
-            console.log("Raw Response:", response);
-          return response.json();
-        })
+            .then(response => response.json())
           .then(data => {
-            console.log("Parsed Data:", data);
-            const count = JSON.parse(data.body); // expecting body: "8"
-            document.getElementById("visitor-count").innerText = count;
+          console.log("Parsed Data:", data);
+          const count = data.count;  // ✅ No JSON.parse needed
+          document.getElementById("visitor-count").innerText = count;
         })
-          .catch(error => {
-            console.error("Error fetching visitor count:", error);
-            document.getElementById("visitor-count").innerText = "Unavailable";
+        .catch(error => {
+          console.error("Error fetching visitor count:", error);
+          document.getElementById("visitor-count").innerText = "Unavailable";
         });
         </script>
 
