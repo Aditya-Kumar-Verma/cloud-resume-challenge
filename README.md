@@ -21,6 +21,11 @@
 ![AWS CloudFormation](https://img.shields.io/badge/AWS-CloudFormation-orange?logo=aws)
 ![AWS SAM](https://img.shields.io/badge/AWS-SAM-blue?logo=aws)
 
+![VS Code](https://img.shields.io/badge/Editor-VSCode-blue?logo=visualstudiocode)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker&logoColor=white)
+![Pytest](https://img.shields.io/badge/Pytest-Testing-blue?logo=pytest)
+
+
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
