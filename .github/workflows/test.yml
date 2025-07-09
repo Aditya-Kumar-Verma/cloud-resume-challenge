@@ -9,7 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -32,15 +31,14 @@ jobs:
 
       - name: Run Put Visitor tests
         run: |
-          cd put_visitor
+          cd ../put_visitor
           python test_app.py
 
   deploy-infra:
     needs: test
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Python
@@ -59,7 +57,7 @@ jobs:
           aws-region: ap-south-1
 
       - name: Build with SAM
-        run: sam build --template template.yaml  # ✅ Fixes the incorrect path issue
+        run: sam build --template-file template.yaml
 
       - name: Deploy with SAM
         run: sam deploy --template-file template.yaml --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cloud-resume-challenge --capabilities CAPABILITY_IAM
