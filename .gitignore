@@ -10,10 +10,10 @@ __pycache__/
 .aws-sam/
 samconfig.toml
 
-# VS Code
+# VS Code settings
 .vscode/
 
-# macOS and Windows
+# OS files
 .DS_Store
 Thumbs.db
 
@@ -27,15 +27,13 @@ node_modules/
 .coverage
 *.egg-info/
 
-# GitHub workflows secrets (if any)
+# GitHub workflow secrets (if any)
 secrets.env
-"env.json" 
+env.json   # ✅ No need for quotes
 
-# Sensitive Files
-index.html
-template.yaml
+
+# Optional (if no longer needed to ignore)
+# template.yaml
+
 events/
 aws-vault
-.env
-"index.html" 
-"template.yaml" 
