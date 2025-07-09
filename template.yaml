@@ -93,7 +93,7 @@ Resources:
     Properties:
       CodeUri: hello_world/
       Handler: app.lambda_handler
-      Runtime: python3.13
+      Runtime: python3.11
       Architectures:
         - x86_64
       Policies:
@@ -119,7 +119,7 @@ Resources:
     Properties:
       CodeUri: put_visitor/
       Handler: app.lambda_handler
-      Runtime: python3.13
+      Runtime: python3.11
       Architectures:
         - x86_64
       Policies:
@@ -140,7 +140,7 @@ Resources:
     Properties:
       CodeUri: get_visitor/
       Handler: app.lambda_handler
-      Runtime: python3.13
+      Runtime: python3.11
       Environment:
         Variables:
           TABLE_NAME: visitorCountTable
