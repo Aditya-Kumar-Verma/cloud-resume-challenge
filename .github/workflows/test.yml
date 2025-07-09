@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Put Visitor tests
         run: |
-          cd ../put_visitor
+          cd put_visitor
           python test_app.py
 
   deploy-infra:
