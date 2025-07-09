@@ -35,11 +35,11 @@ jobs:
           cd put_visitor
           python test_app.py
 
-     deploy-infra:
-      needs: test
-      runs-on: ubuntu-latest
+  deploy-infra:
+    needs: test
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
