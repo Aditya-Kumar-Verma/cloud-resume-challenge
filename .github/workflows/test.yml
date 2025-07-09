@@ -60,10 +60,12 @@ jobs:
         run: sam build --template-file template.yaml --use-container
 
       - name: Deploy with SAM
-        run: sam deploy \
-          --template-file template.yaml \
-          --stack-name cloud-resume-challenge \
-          --capabilities CAPABILITY_IAM \
-          --no-confirm-changeset \
-          --no-fail-on-empty-changeset \
-          --s3-bucket my-challenge-to-cloud23
+        run: |
+          sam deploy \
+            --template-file template.yaml \
+            --stack-name cloud-resume-challenge \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --s3-bucket my-challenge-to-cloud23
+
