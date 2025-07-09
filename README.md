@@ -13,6 +13,7 @@
 ![Pytest](https://img.shields.io/badge/Pytest-Testing-blue?logo=pytest)
 ![CI Tests](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automation-2088FF?logo=githubactions)
+![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Aditya-Kumar-Verma.cloud-resume-challenge)
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
