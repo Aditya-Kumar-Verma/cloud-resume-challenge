@@ -108,11 +108,11 @@ Resources:
           Properties:
             Path: /hello
             Method: get
-        VisitorCounter:
-          Type: Api
-          Properties:
-            Path: /visitors
-            Method: get
+        #VisitorCounter:
+         # Type: Api
+          #Properties:
+           # Path: /visitors
+            #Method: get
 
   PutVisitorFunction:
     Type: AWS::Serverless::Function
