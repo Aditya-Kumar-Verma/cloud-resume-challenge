@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
       - name: Set up Python
@@ -60,6 +60,8 @@ jobs:
 
       - name: Build with SAM
         run: sam build --template template.yaml
+        working-directory: ./  # ✅ Fixes the incorrect path issue
 
       - name: Deploy with SAM
         run: sam deploy --template template.yaml --no-confirm-changeset --no-fail-on-empty-changeset --stack-name cloud-resume-challenge --capabilities CAPABILITY_IAM
+        working-directory: ./  # ✅ Makes sure it runs from correct path
