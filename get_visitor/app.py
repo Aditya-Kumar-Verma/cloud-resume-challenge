@@ -1,27 +1,33 @@
 import boto3
 import os
 import json
-from decimal import Decimal  # <-- ADD THIS
 
 def lambda_handler(event, context):
     try:
         dynamodb = boto3.resource("dynamodb")
-        table_name = os.environ.get("TABLE_NAME")
-        table = dynamodb.Table(table_name)
-        
-        response = table.get_item(Key={'id': 'visitorCount'})
-        count = int(response['Item']['count'])  # <-- CONVERT TO int
-        
+        table = dynamodb.Table(os.environ["TABLE_NAME"])
+
+        response = table.get_item(Key={'id': 'visitor'})
+        item = response.get('Item', {})
+        count = int(item.get('count', 0))
+
         return {
             "statusCode": 200,
-            "headers": { "Access-Control-Allow-Origin": "*" },
-            "body": json.dumps({ "count": count })  # <-- JSON OBJECT
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            },
+            "body": json.dumps({ "count": count })
         }
-        
+
     except Exception as e:
         return {
             "statusCode": 500,
-            "headers": { "Access-Control-Allow-Origin": "*" },
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            },
             "body": json.dumps({ "error": str(e) })
         }
-# This code retrieves the visitor count from a DynamoDB table and returns it as a JSON response.
