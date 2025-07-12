@@ -616,20 +616,20 @@ footer {
 
         <!-- Visitor Counter Script -->
         <script>
-          fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors", {
-            method: "PUT"
-      })
-            .then(() => {
-              return fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors");
-        })
-            .then(response => response.json())
-            .then(data => {
-              document.getElementById("visitor-count").innerText = data.count;
-        })
-        .catch(error => {
-          console.error("Error with visitor counter:", error);
-          document.getElementById("visitor-count").innerText = "Unavailable";
-      });
+          const counterElement = document.getElementById("visitor-count");
+          counterElement.innerText = "Loading...";
+          Promise.all([
+            fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors", { method: "PUT" }),
+            fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors")
+          ])
+            .then(responses => Promise.all(responses.map(res => res.json())))
+            .then(([putData, getData]) => {
+              counterElement.innerText = getData.count;
+          })
+          .catch(error => {
+            console.error("Error with visitor counter:", error);
+            counterElement.innerText = "Unavailable";
+        });
         </script>
 
     </main>
