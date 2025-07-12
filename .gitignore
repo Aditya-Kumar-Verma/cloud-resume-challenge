@@ -37,5 +37,4 @@ env.json   # ✅ No need for quotes
 
 events/
 aws-vault
-"env.json" 
-env.json 
+"env.json"env.json 
