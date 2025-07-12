@@ -616,27 +616,21 @@ footer {
 
         <!-- Visitor Counter Script -->
         <script>
-  const apiEndpoint = "https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors";
-
-  // First: PUT request to increment visitor count
-  fetch(apiEndpoint, {
-    method: "PUT",
-  })
-  .then(() => {
-    // Then: GET request to fetch the updated count
-    return fetch(apiEndpoint);
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log("Updated Visitor Count:", data.count);
-    document.getElementById("visitor-count").innerText = data.count;
-  })
-  .catch(error => {
-    console.error("Error updating visitor count:", error);
-    document.getElementById("visitor-count").innerText = "Unavailable";
-  });
-</script>
-
+          fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors", {
+            method: "PUT"
+      })
+            .then(() => {
+              return fetch("https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors");
+        })
+            .then(response => response.json())
+            .then(data => {
+              document.getElementById("visitor-count").innerText = data.count;
+        })
+        .catch(error => {
+          console.error("Error with visitor counter:", error);
+          document.getElementById("visitor-count").innerText = "Unavailable";
+      });
+        </script>
 
     </main>
 
