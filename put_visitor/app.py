@@ -1,20 +1,20 @@
 import boto3
 import os
+import json
 
 def lambda_handler(event, context):
     try:
         table_name = os.environ.get("TABLE_NAME")
         dynamodb = boto3.resource("dynamodb")
         table = dynamodb.Table(table_name)
-
         response = table.update_item(
-            Key={"id": "visitorCount"},
-            UpdateExpression="ADD #c :inc",
+            Key={"id": "visitor"},  # Changed from "visitorCount" to "visitor"
+            UpdateExpression="SET #c = if_not_exists(#c, :start) + :inc",
             ExpressionAttributeNames={"#c": "count"},
-            ExpressionAttributeValues={":inc": 1},
+            ExpressionAttributeValues={":start": 0, ":inc": 1},
             ReturnValues="UPDATED_NEW"
         )
-
+        count = int(response['Attributes']['count'])
         return {
             "statusCode": 200,
             "headers": {
@@ -22,18 +22,15 @@ def lambda_handler(event, context):
                 "Access-Control-Allow-Methods": "PUT,OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             },
-            "body": f"Visitor count incremented to {int(response['Attributes']['count'])}"
+            "body": json.dumps({"count": count})  # Return JSON for consistency
         }
-
     except Exception as e:
         return {
             "statusCode": 500,
             "headers": {
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "https://aditya-dev.tech",
                 "Access-Control-Allow-Methods": "PUT,OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             },
-            "body": f"Error: {str(e)}"
+            "body": json.dumps({"error": str(e)})
         }
-# Note: Ensure that the environment variable TABLE_NAME is set to your DynamoDB table name.
-# This code increments the visitor count in the DynamoDB table and returns the updated count.

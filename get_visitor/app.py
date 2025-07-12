@@ -25,7 +25,7 @@ def lambda_handler(event, context):
         return {
             "statusCode": 500,
             "headers": {
-                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Origin": "https://aditya-dev.tech",
                 "Access-Control-Allow-Methods": "GET,OPTIONS",
                 "Access-Control-Allow-Headers": "Content-Type"
             },
