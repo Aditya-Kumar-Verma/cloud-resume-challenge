@@ -34,6 +34,11 @@ jobs:
           cd put_visitor
           python test_app.py
 
+      - name: Run Integration Test
+        run: |
+          echo '{ "DOMAIN_NAME": "api.aditya-dev.tech" }' > config.json
+          make integration-test
+
   deploy-infra:
     needs: test
     runs-on: ubuntu-latest
