@@ -28,4 +28,11 @@ integration-test:
 		exit 1; \
 	fi
 
+.PHONY: end-to-end-test
+
+end-to-end-test:
+	@echo "🔀 Running end-to-end smoke test…"
+	@cd end-to-end-test && node index.js
+	
+
 
