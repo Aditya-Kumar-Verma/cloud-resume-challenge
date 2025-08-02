@@ -310,6 +310,62 @@
     width: 24px;
   }
 
+.certifications-scroll::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+.certifications-scroll {
+  display: flex;
+  overflow-x: auto;
+  padding: 1rem 0;
+  gap: 1.5rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.certificate-card {
+  flex: 0 0 auto;
+  width: 240px;
+  scroll-snap-align: start;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.certificate-card img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 0.75rem;
+}
+
+.certificate-card p {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+}
+
+.certificate-card small {
+  font-weight: normal;
+  color: #555;
+}
+
+.certificate-card button {
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.certificate-card button:hover {
+  background-color: #0055aa;
+}
+
+
 footer {
   background-color: #ffffff; /* Pure white background for contrast on desktop */
   text-align: center;
@@ -560,16 +616,52 @@ footer {
                 <div class="skill-item"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Bash Logo"><p>Bash</p></div>
             </div>
         </section>
-
+        
         <!-- CERTIFICATIONS (Single Column) -->
         <section class="content-section full-width-section">
             <h2 class="section-title">Certifications</h2>
-            <div class="cert-container">
-                <div class="cert-item"><img src="https://i.ibb.co/j9yMkMzx/OCID2023-CP-removebg-preview.png" alt="Oracle Developer Badge"><p><b>Oracle Certified Developer Professional</b></p><p>Issued 07/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=982B48DC06B7D5CBB4CA2BEE7340AAC137F5131A508B7724F823B40E635816BC" target="_blank">Verify</a></div>
-                <div class="cert-item"><img src="https://i.ibb.co/wZ4JVCBm/OCI2023-CAA-removebg-preview.png" alt="Oracle Architect Badge"><p><b>Oracle Certified Architect Associate</b></p><p>Issued 07/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=E5FA2B13013E107047DBE709A52DDD8EB0A225F1D9335EA9A5671B78F0192ACB" target="_blank">Verify</a></div>
-                <div class="cert-item"><img src="https://i.ibb.co/R4vsgpBw/OCIF2023-CA-removebg-preview.png" alt="Oracle Foundations Badge"><p><b>Oracle Certified Foundations Associate</b></p><p>Issued 06/2023</p><a href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=44F24CA7EFA4CF0E816CF7F44AFAD08166B756F4CF0D69E7985087844BD4D413" target="_blank">Verify</a></div>
-                <div class="cert-item"><img src="https://i.ibb.co/JRvm7s91/GOOGLE-LOGO.png" alt="Google Cloud Badge"><p><b>Cloud Engineering with Google Cloud</b></p><p>Issued 11/2023</p><a href="https://drive.google.com/file/d/1yyQ9sgsY9S3oswgp-yhIOQPFQqVe4dDG/view?usp=sharing" target="_blank">Verify</a></div>
+        </section>
+
+        <!-- CERTIFICATIONS (Horizontal Scroll) -->
+        <section class="certifications-scroll-wrapper">
+            <div class="certifications-scroll">
+            <!-- Repeat this block for each certificate -->
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/wNJK8F4B/OCI-Certified-Developer-Professional-Badge-Photoroom-Photoroom.png" alt="Oracle Certified Developer Professional">
+              <p>Oracle Certified Developer Professional<br><small>Issued 07/2025</small></p>
+              <button>Verify</button>
             </div>
+
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/mCwf2dst/OCI-Certified-Dev-Ops-Professional-Badge-Photoroom-Photoroom.png" alt="Oracle Certified DevOps Professional">
+              <p>Oracle Certified Devops Professional<br><small>Issued 07/2025</small></p>
+              <button>Verify</button>
+            </div>
+
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/5XNXgr3X/OCI-Certified-Architect-Associate-Badge-Photoroom-Photoroom.png" alt="Oracle Certified Architect Associate">
+              <p>Oracle Certified Architect Associate<br><small>Issued 07/2025</small></p>
+              <button>Verify</button>
+            </div>
+
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/Wv0Ks4WJ/OCI-Certified-Foundations-Associate-Badge-Photoroom-Photoroom.png" alt="Oracle Certified Foundations Associate">
+              <p>Oracle Certified Foundations Associate<br><small>Issued 07/2025</small></p>
+              <button>Verify</button>
+            </div>
+
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/675kM6kj/google-cloud-computing-foundations-certificate.png" alt="Google Cloud Computing Foundations">
+              <p>Google Cloud Computing Foundations<br><small>Issued 07/2024</small></p>
+              <button>Verify</button>
+            </div>
+
+            <div class="certificate-card">
+              <img src="https://i.ibb.co/JRvm7s91/GOOGLE-LOGO.png" alt="Cloud Engineering with Google Cloud">
+              <p>Cloud Engineering with Google Cloud<br><small>Issued 11/2023</small></p>
+              <button>Verify</button>
+            </div>
+          </div>
         </section>
         
         <!-- ACHIEVEMENTS (Single Column) -->
