@@ -311,7 +311,20 @@
   }
 
 .certifications-scroll::-webkit-scrollbar {
-  display: none; /* Hide scrollbar */
+  height: 6px; /* Controls thickness for horizontal scroll */
+}
+
+.certifications-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.certifications-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.3); /* Light gray with some transparency */
+  border-radius: 10px;
+}
+
+.certifications-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.5); /* Slightly darker on hover */
 }
 
 .certifications-scroll {
