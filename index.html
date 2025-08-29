@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aditya Kumar Verma | Resume</title>
+    <title>Aditya Kumar Verma | Cloud Resume Challenge</title>
+
+    <!-- FAVICONS & APP ICONS -->
+    <!-- Standard Favicons for Browsers -->
+      <link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/bR8sPyzj/favicon-16x16.png">
+      <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/HffGSW87/favicon-32x32.png">    
+    <!-- Apple Touch Icon (iOS) -->
+      <link rel="apple-touch-icon" href="https://i.ibb.co/5X57tdQ6/apple-touch-icon.png">
+    <!-- Android / High-Resolution Icons -->
+      <link rel="icon" type="image/png" sizes="192x192" href="https://i.ibb.co/q3K9d1vY/android-chrome-192x192.png">
+      <link rel="icon" type="image/png" sizes="512x512" href="https://i.ibb.co/93VYmLCd/android-chrome-512x512.png">
+
     <!-- Google Fonts: Roboto for Header, Inter for Body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Poppins:wght@600;700&family=Oswald:wght@500;700&family=Ubuntu:wght@500;700&display=swap" rel="stylesheet">
     <!-- Font Awesome for general icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Devicon for technology icons -->
@@ -74,16 +85,16 @@
         .profile-image-wrapper { position: relative; flex-shrink: 0; }
         .profile-image-wrapper::before { content: ''; position: absolute; top: -12px; left: -12px; width: 100%; height: 100%; border: 1.5px solid var(--border-color); z-index: -1; border-radius: 8px; }
         .profile-image { width: 140px; height: 140px; object-fit: cover; border-radius: 8px; display: block; }
-        .header-text-block h1 { font-family: 'Roboto', sans-serif; font-size: 3.5rem; font-weight: 900; margin: 0; line-height: 1.1; color: var(--primary-text); }
+        .header-text-block h1 { font-family: 'Merriweather', serif; font-size: 4rem; font-weight: 1100; margin: 0; line-height: 1.1; color: var(--primary-text); }
         .header-text-block .job-title { font-size: 1rem; font-weight: 500; margin: 0.75rem 0 0 0; color: var(--secondary-text); text-transform: uppercase; letter-spacing: 0.1em; }
         
         .social-icons {
-  display: flex;
-  gap: 1.5rem;
-  margin-top: 1.25rem;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-start; /* Default for desktop: left-aligned */
+          display: flex;
+          gap: 1.5rem;
+          margin-top: 1.25rem;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: flex-start; /* Default for desktop: left-aligned */
 }
 
         .social-icons a, .social-icons .icon-item { display: inline-block; transition: transform 0.2s ease; }
@@ -275,10 +286,21 @@
   }
 }
 
-@media (max-width: 768px) {
+/* Responsive adjustments for social icons */
+@media (max-width: 1200px) {
+  .sticky-header {
+    flex-direction: column;   /* Stack vertically */
+    align-items: center;      /* Center all items */
+    text-align: center;       /* Center text */
+  }
+
+  .header-text-block {
+    margin-top: 0.8rem; /* spacing below image */
+  }
+
   .social-icons {
     justify-content: center;
-    text-align: center;
+    margin-top: 0.8rem;
   }
 }
 
@@ -761,7 +783,6 @@ footer {
     <p>© 2025 Aditya Kumar Verma. All rights reserved.</p>
   </div>
 </footer>
-
 
 </body>
 </html>
