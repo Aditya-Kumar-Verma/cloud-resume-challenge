@@ -8,7 +8,12 @@ Globals:
     Timeout: 30
     LoggingConfig:
       LogFormat: JSON
-
+  Api:
+    Cors:
+      AllowMethods: "'GET,PUT,OPTIONS'"
+      AllowHeaders: "'Content-Type'"
+      AllowOrigin: "'*'"
+      
 Resources:
 
   MyCloudWebsite:
