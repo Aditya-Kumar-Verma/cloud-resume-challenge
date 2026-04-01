@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -21,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install boto3
-          pip install -r hello_world/requirements.txt || true
           pip install -r put_visitor/requirements.txt || true
 
       - name: Run Get Visitor tests
