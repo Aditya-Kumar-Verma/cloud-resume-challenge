@@ -4,145 +4,246 @@
 ![CSS](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![Node.js](https://img.shields.io/badge/Node.js-22.x-339933?logo=nodedotjs&logoColor=white)
 ![AWS Lambda](https://img.shields.io/badge/AWS-Lambda-orange?logo=aws-lambda)
 ![Amazon API Gateway](https://img.shields.io/badge/AWS-API--Gateway-purple?logo=amazonaws)
 ![DynamoDB](https://img.shields.io/badge/AWS-DynamoDB-blueviolet?logo=amazonaws)
+![AWS CloudFront](https://img.shields.io/badge/AWS-CloudFront-orange?logo=amazonaws)
+![AWS S3](https://img.shields.io/badge/AWS-S3-569A31?logo=amazonaws)
 ![AWS CloudFormation](https://img.shields.io/badge/AWS-CloudFormation-orange?logo=aws)
 ![AWS SAM](https://img.shields.io/badge/AWS-SAM-blue?logo=aws)
 ![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED?logo=docker&logoColor=white)
-![Pytest](https://img.shields.io/badge/Pytest-Testing-blue?logo=pytest)
 ![CI Tests](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-Automation-2088FF?logo=githubactions)
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=Aditya-Kumar-Verma.cloud-resume-challenge)
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+A fully serverless cloud resume built on AWS, deployed via a CI/CD pipeline, and served through a global CDN. This project implements the [Cloud Resume Challenge](https://cloudresumechallenge.dev/) — a hands-on project designed to demonstrate real-world cloud engineering skills.
 
-- hello_world - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
-- tests - Unit tests for the application code. 
-- template.yaml - A template that defines the application's AWS resources.
+**Live site:** [aditya-dev.tech](https://aditya-dev.tech)
 
-The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
+---
 
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.  
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
+## Architecture Overview
 
-* [CLion](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [GoLand](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [IntelliJ](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [WebStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [Rider](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PhpStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PyCharm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [RubyMine](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [DataGrip](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
-* [Visual Studio](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/welcome.html)
+```
+Browser → Route 53 → CloudFront (CDN) → S3 (static HTML/CSS/JS)
+                                      ↓
+                              JavaScript fetch()
+                                      ↓
+                         API Gateway (REST + HTTP)
+                          ├── PUT /visitors  → PutVisitorFunction (Python)  → DynamoDB (visitorCountTable)
+                          ├── GET /visitors  → GetVisitorFunction (Python)  → DynamoDB (visitorCountTable)
+                          └── POST /track    → TrackVisitorFunction (Node.js) → DynamoDB (VisitorProfiles + VisitorEvents)
+```
 
-## Deploy the sample application
+**Key design decisions:**
+- S3 bucket is **private** — only CloudFront can read from it via Origin Access Control (OAC). Direct S3 URLs are blocked.
+- All infrastructure is defined as code in `template.yaml` using AWS SAM (a CloudFormation extension).
+- Every push to `main` automatically runs tests, deploys infrastructure, syncs the frontend, and invalidates the CloudFront cache.
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+---
 
-To use the SAM CLI, you need the following tools.
+## Project Structure
 
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+```
+cloud-resume-challenge/
+├── site/                          # Frontend (deployed to S3)
+│   └── index.html                 # Resume page with visitor counter
+│
+├── get_visitor/                   # Lambda: reads visitor count from DynamoDB
+│   ├── app.py
+│   └── test_app.py
+│
+├── put_visitor/                   # Lambda: increments visitor count in DynamoDB
+│   ├── app.py
+│   ├── test_app.py
+│   └── requirements.txt
+│
+├── src/
+│   └── track-visitor/             # Lambda: records per-visitor geo + event data
+│       ├── index.js
+│       └── package.json
+│
+├── template.yaml                  # AWS SAM infrastructure definition
+├── .github/workflows/test.yml     # CI/CD pipeline (GitHub Actions)
+├── Makefile                       # Local development shortcuts
+└── end-to-end-test/               # Puppeteer browser test
+    └── index.js
+```
 
-To build and deploy your application for the first time, run the following in your shell:
+---
+
+## AWS Resources
+
+All resources are defined in `template.yaml` and provisioned automatically by AWS SAM / CloudFormation.
+
+| Resource | Type | Purpose |
+|---|---|---|
+| `MyCloudWebsite` | S3 Bucket | Hosts the static resume HTML |
+| `MyOAC` | CloudFront OAC | Grants CloudFront-only access to S3 |
+| `MyCloudWebsitePolicy` | S3 Bucket Policy | Enforces OAC — blocks all direct S3 access |
+| `MyDistribution` | CloudFront Distribution | Global CDN, HTTPS, custom domain |
+| `MyRoute53Record` | Route 53 Record Set | DNS for `aditya-dev.tech` and `www.aditya-dev.tech` |
+| `VisitorTable` | DynamoDB Table | Stores total visitor count (`id=visitor`) |
+| `VisitorProfilesTable` | DynamoDB Table | Stores per-visitor profile + geo data |
+| `VisitorEventsTable` | DynamoDB Table | Logs each page visit event with timestamp |
+| `PutVisitorFunction` | Lambda (Python 3.11) | Increments total visitor count atomically |
+| `GetVisitorFunction` | Lambda (Python 3.11) | Reads and returns total visitor count |
+| `TrackVisitorFunction` | Lambda (Node.js 22) | Hashes visitor IP+UA, logs geo data via ipapi.co |
+
+---
+
+## CI/CD Pipeline
+
+Every push to `main` triggers a 4-stage pipeline defined in `.github/workflows/test.yml`:
+
+```
+push to main
+     │
+     ▼
+┌─────────────────────────────┐
+│  Job 1: test                │  Unit tests (Python) + live integration test
+└─────────────┬───────────────┘
+              │ must pass
+              ▼
+┌─────────────────────────────┐
+│  Job 2: deploy-infra        │  sam build --use-container + sam deploy
+└─────────────┬───────────────┘
+              │ must pass
+              ▼
+┌─────────────────────────────┐
+│  Job 3: deploy-site         │  aws s3 sync site/ → S3 bucket
+└─────────────┬───────────────┘
+              │ must pass
+              ▼
+┌─────────────────────────────┐
+│  Job 4: invalidate-cache    │  CloudFront cache invalidation (/* paths)
+└─────────────────────────────┘
+```
+
+AWS credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `CLOUDFRONT_DISTRIBUTION_ID`) are stored as GitHub Actions secrets and never committed to the repository.
+
+---
+
+## Lambda Functions
+
+### `get_visitor` — Python 3.11
+Reads the visitor count from DynamoDB using `get_item`. Returns `{ "count": N }` as JSON with CORS headers.
+
+### `put_visitor` — Python 3.11
+Atomically increments the visitor count using a conditional `SET` expression (`if_not_exists` + increment). Safe for concurrent requests — no read-modify-write race condition.
+
+### `src/track-visitor` — Node.js 22 (ES Modules)
+Extracts visitor IP and User-Agent, hashes them with SHA-256 (no PII stored), calls [ipapi.co](https://ipapi.co) to get geolocation, then writes a profile update and an event log to DynamoDB. Uses the native `fetch` API (Node 22 built-in) and `@aws-sdk/client-dynamodb`.
+
+---
+
+## Testing
+
+### Unit tests
+Each Lambda has a co-located unit test file using Python's `unittest` with `unittest.mock` to mock DynamoDB. No AWS credentials needed.
 
 ```bash
-sam build --use-container
+# Run get_visitor tests
+cd get_visitor && python test_app.py
+
+# Run put_visitor tests
+cd put_visitor && python test_app.py
+```
+
+### Integration test
+Hits the live API Gateway endpoint and asserts that a PUT followed by a GET increments the count. Requires the stack to be deployed.
+
+```bash
+echo '{ "DOMAIN_NAME": "api.aditya-dev.tech" }' > config.json
+make integration-test
+```
+
+### End-to-end test
+Uses Puppeteer to load the live site in a headless browser and assert that `#visitor-count` renders a non-empty value.
+
+```bash
+cd end-to-end-test
+npm install
+node index.js
+```
+
+---
+
+## Local Development
+
+### Prerequisites
+- [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+- [Python 3.11](https://www.python.org/downloads/)
+- [Node.js 22](https://nodejs.org/)
+- [Docker](https://hub.docker.com/search/?type=edition&offering=community) (required for `sam build --use-container`)
+- AWS credentials configured locally
+
+### Build and deploy manually
+
+```bash
+# Build all Lambda functions in a Lambda-compatible Docker container
+sam build --template-file template.yaml --use-container
+
+# Deploy to AWS (first time — guided prompts)
 sam deploy --guided
+
+# Deploy to AWS (subsequent times)
+sam deploy \
+  --template-file template.yaml \
+  --stack-name cloud-resume-challenge \
+  --capabilities CAPABILITY_IAM \
+  --no-confirm-changeset \
+  --no-fail-on-empty-changeset \
+  --s3-bucket my-challenge-to-cloud23
 ```
 
-The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
-
-* **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
-* **AWS Region**: The AWS region you want to deploy your app to.
-* **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
-* **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
-* **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
-
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
-
-## Use the SAM CLI to build and test locally
-
-Build your application with the `sam build --use-container` command.
+### Useful Makefile commands
 
 ```bash
-cloud-resume-challenge$ sam build --use-container
+# Run the integration test against the live API
+make integration-test
+
+# Invoke PutVisitorFunction locally with a test event
+make invoke-put
+
+# Invoke GetVisitorFunction locally
+make invoke-get
 ```
 
-The SAM CLI installs dependencies defined in `hello_world/requirements.txt`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
-
-Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
-
-Run functions locally and invoke them with the `sam local invoke` command.
+### View live Lambda logs
 
 ```bash
-cloud-resume-challenge$ sam local invoke HelloWorldFunction --event events/event.json
+sam logs -n PutVisitorFunction --stack-name cloud-resume-challenge --tail
+sam logs -n GetVisitorFunction --stack-name cloud-resume-challenge --tail
+sam logs -n TrackVisitorFunction --stack-name cloud-resume-challenge --tail
 ```
 
-The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
+---
 
-```bash
-cloud-resume-challenge$ sam local start-api
-cloud-resume-challenge$ curl http://localhost:3000/
-```
+## Security Notes
 
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
+- The S3 bucket does **not** allow public access. All traffic is routed through CloudFront using Origin Access Control (OAC). Requests to the raw S3 URL return `403 Access Denied`.
+- Visitor IPs are never stored in plaintext. `TrackVisitorFunction` hashes `IP + User-Agent` with SHA-256 before writing to DynamoDB.
+- The CI/CD IAM user (`cloud-resume-cicd-automation-user`) follows least-privilege — it can only create/update roles prefixed with `cloud-resume-challenge-*`.
+- All Lambda functions return `Access-Control-Allow-Origin: *` on both success and error responses for consistent CORS behaviour.
 
-```yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
-```
-
-## Add a resource to your application
-The application template uses AWS Serverless Application Model (AWS SAM) to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in [the SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
-
-## Fetch, tail, and filter Lambda function logs
-
-To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs` lets you fetch logs generated by your deployed Lambda function from the command line. In addition to printing the logs on the terminal, this command has several nifty features to help you quickly find the bug.
-
-`NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
-
-```bash
-cloud-resume-challenge$ sam logs -n HelloWorldFunction --stack-name "cloud-resume-challenge" --tail
-```
-
-You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
-
-## Tests
-
-Tests are defined in the `tests` folder in this project. Use PIP to install the test dependencies and run tests.
-
-![Test](https://github.com/Aditya-Kumar-Verma/cloud-resume-challenge/actions/workflows/test.yml/badge.svg)
-
-
-```bash
-cloud-resume-challenge$ pip install -r tests/requirements.txt --user
-# unit test
-cloud-resume-challenge$ python -m pytest tests/unit -v
-# integration test, requiring deploying the stack first.
-# Create the env variable AWS_SAM_STACK_NAME with the name of the stack we are testing
-cloud-resume-challenge$ AWS_SAM_STACK_NAME="cloud-resume-challenge" python -m pytest tests/integration -v
-```
+---
 
 ## Cleanup
 
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
+To tear down all AWS resources created by this project:
 
 ```bash
-sam delete --stack-name "cloud-resume-challenge"
+sam delete --stack-name cloud-resume-challenge
 ```
+
+> **Warning:** This deletes the S3 bucket, CloudFront distribution, DynamoDB tables, Lambda functions, and all associated IAM roles. The Route 53 records and ACM certificate are not deleted automatically.
+
+---
 
 ## Resources
 
-See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
-
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+- [Cloud Resume Challenge](https://cloudresumechallenge.dev/) — the original challenge specification
+- [AWS SAM Developer Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+- [AWS Serverless Application Repository](https://aws.amazon.com/serverless/serverlessrepo/)
