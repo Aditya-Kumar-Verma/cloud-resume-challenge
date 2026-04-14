@@ -509,6 +509,56 @@ footer {
   }
 }
 
+/* --- Dashboard styles --- */
+.dash-card {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.dash-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--secondary-text);
+  margin-bottom: 0.4rem;
+}
+.dash-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #3b82f6;
+}
+.dash-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.dash-table th {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border-color);
+  font-weight: 600;
+  color: var(--primary-text);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dash-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--secondary-text);
+}
+.dash-table tr:last-child td { border-bottom: none; }
+.dash-table tr:hover td { background: #f9fafb; }
+
+@media (max-width: 640px) {
+  #dashboard-content > div:last-child {
+    grid-template-columns: 1fr;
+  }
+}
+
     </style>
 </head>
 <body>
@@ -741,6 +791,103 @@ footer {
             </div>
         </section>
 
+        <!-- DASHBOARD SECTION -->
+        <section class="content-section full-width-section" id="dashboard-section" style="margin-top:3rem;">
+          <h2 class="section-title" style="text-align:left;">Visitor Dashboard</h2>
+
+        <!-- Lock screen -->
+        <div id="dashboard-lock" style="text-align:center; padding:2rem 0;">
+          <p style="color:var(--secondary-text); margin-bottom:1rem; font-size:0.95rem;">
+            This dashboard is password protected.
+          </p>
+          <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap;">
+            <input
+              type="password"
+              id="dashboard-password"
+              placeholder="Enter password"
+              style="padding:0.6rem 1rem; border:1px solid var(--border-color);
+                     border-radius:8px; font-size:0.95rem; width:220px; outline:none;"
+              onkeydown="if(event.key==='Enter') unlockDashboard()"
+            />
+            <button
+            onclick="unlockDashboard()"
+            style="padding:0.6rem 1.4rem; background:var(--accent-text); color:#fff;
+                   border:none; border-radius:8px; font-size:0.95rem; cursor:pointer;">
+            Unlock
+            </button>
+          </div>
+          <p id="dashboard-error" style="color:#e74c3c; font-size:0.85rem; margin-top:0.5rem; display:none;">
+            Incorrect password.
+          </p>
+        </div>
+
+        <!-- Dashboard content (hidden until unlocked) -->
+        <div id="dashboard-content" style="display:none;">
+
+        <!-- Stat cards -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+                    gap:1rem; margin-bottom:2rem;">
+        <div class="dash-card">
+          <div class="dash-label">Total visits</div>
+          <div class="dash-value" id="d-total-visits">—</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">Unique visitors</div>
+          <div class="dash-value" id="d-unique">—</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">Returning</div>
+          <div class="dash-value" id="d-returning">—</div>
+        </div>
+        <div class="dash-card">
+          <div class="dash-label">New visitors</div>
+          <div class="dash-value" id="d-new">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- World map -->
+    <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
+      Visitor locations
+    </h3>
+    <div id="visitor-map" style="width:100%; background:#f0f4f8; border-radius:12px;
+         overflow:hidden; margin-bottom:2rem;"></div>
+
+    <!-- Visits over time chart -->
+    <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
+      Visits over time (last 30 days)
+    </h3>
+    <div style="position:relative; width:100%; height:220px; margin-bottom:2rem;">
+      <canvas id="visits-chart"></canvas>
+    </div>
+
+    <!-- Two-column tables -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1rem;">
+
+      <div>
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
+          Top countries
+        </h3>
+        <table class="dash-table" id="countries-table">
+          <thead><tr><th>Country</th><th>Visits</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div>
+        <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
+          Top cities
+        </h3>
+        <table class="dash-table" id="cities-table">
+          <thead><tr><th>City</th><th>Visits</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
         <!-- Visitor Counter Script -->
         <script>
           const counterElement = document.getElementById("visitor-count");
@@ -766,7 +913,164 @@ footer {
           });
         </script>
 
-    </main>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+
+        <script>
+        const DASHBOARD_API = "https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/dashboard";
+
+        function unlockDashboard() {
+          const pw = document.getElementById("dashboard-password").value;
+          const err = document.getElementById("dashboard-error");
+          err.style.display = "none";
+
+          fetch(DASHBOARD_API, {
+            headers: { "x-dashboard-key": pw }
+          })
+          .then(r => {
+            if (r.status === 401) throw new Error("unauthorized");
+            if (!r.ok) throw new Error("server error");
+            return r.json();
+          })
+          .then(data => {
+            document.getElementById("dashboard-lock").style.display = "none";
+            document.getElementById("dashboard-content").style.display = "block";
+            renderDashboard(data);
+          })
+          .catch(e => {
+            if (e.message === "unauthorized") {
+              err.style.display = "block";
+            } else {
+              err.textContent = "Failed to load dashboard. Try again.";
+              err.style.display = "block";
+            }
+          });
+      }
+
+        function renderDashboard(data) {
+          // Stat cards
+          document.getElementById("d-total-visits").textContent = data.total_visits.toLocaleString();
+          document.getElementById("d-unique").textContent       = data.total_unique.toLocaleString();
+          document.getElementById("d-returning").textContent    = data.returning.toLocaleString();
+          document.getElementById("d-new").textContent          = data.new_visitors.toLocaleString();
+
+          // World map with D3
+          renderMap(data.locations);
+
+          // Visits over time chart
+          renderChart(data.visits_over_time);
+
+          // Tables
+          renderTable("countries-table", data.top_countries, "name", "visits");
+          renderTable("cities-table",    data.top_cities,    "name", "visits");
+      }
+
+      function renderMap(locations) {
+        const container = document.getElementById("visitor-map");
+        const W = container.clientWidth || 700;
+        const H = Math.round(W * 0.5);
+
+        const svg = d3.select("#visitor-map")
+          .append("svg")
+          .attr("width", "100%")
+          .attr("viewBox", `0 0 ${W} ${H}`);
+
+        const projection = d3.geoNaturalEarth1()
+          .scale(W / 6.5)
+          .translate([W / 2, H / 2]);
+
+        const path = d3.geoPath(projection);
+
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
+          // Draw countries
+          svg.append("g")
+            .selectAll("path")
+            .data(topojson.feature(world, world.objects.countries).features)
+            .join("path")
+            .attr("d", path)
+            .attr("fill", "#dce8f5")
+            .attr("stroke", "#fff")
+            .attr("stroke-width", 0.4);
+
+          // Max visits for scale
+          const maxV = d3.max(locations, d => d.visits) || 1;
+          const rScale = d3.scaleSqrt().domain([1, maxV]).range([4, 18]);
+
+          // Draw visitor dots
+          svg.append("g")
+            .selectAll("circle")
+            .data(locations)
+            .join("circle")
+            .attr("cx", d => {
+              const coords = projection([d.lon, d.lat]);
+              return coords ? coords[0] : null;
+            })
+            .attr("cy", d => {
+              const coords = projection([d.lon, d.lat]);
+              return coords ? coords[1] : null;
+            })
+            .attr("r", d => rScale(d.visits))
+            .attr("fill", "#3b82f6")
+            .attr("fill-opacity", 0.65)
+            .attr("stroke", "#1d4ed8")
+            .attr("stroke-width", 0.8)
+            .append("title")
+            .text(d => `${d.city}, ${d.country}: ${d.visits} visit${d.visits !== 1 ? "s" : ""}`);
+        });
+      }
+
+      function renderChart(data) {
+        new Chart(document.getElementById("visits-chart"), {
+          type: "line",
+          data: {
+            labels: data.map(d => d.date),
+            datasets: [{
+              label: "Visits",
+              data: data.map(d => d.visits),
+              borderColor: "#3b82f6",
+              backgroundColor: "rgba(59,130,246,0.08)",
+              borderWidth: 2,
+              pointRadius: 3,
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: {
+                ticks: { maxRotation: 45, font: { size: 11 } },
+                grid: { color: "rgba(0,0,0,0.05)" }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: { precision: 0, font: { size: 11 } },
+                grid: { color: "rgba(0,0,0,0.05)" }
+        }
+      }
+    }
+  });
+}
+
+      function renderTable(tableId, rows, nameKey, valueKey) {
+        const tbody = document.querySelector(`#${tableId} tbody`);
+        tbody.innerHTML = "";
+        if (!rows || rows.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="2" style="color:#9ca3af;font-size:0.85rem;">No data yet</td></tr>';
+          return;
+        }
+        rows.forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${row[nameKey]}</td><td>${row[valueKey].toLocaleString()}</td>`;
+          tbody.appendChild(tr);
+        });
+      }
+  </script>
+
+</main>
 
 <script>
   window.addEventListener("scroll", function () {

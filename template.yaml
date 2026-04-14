@@ -142,6 +142,31 @@ Resources:
             Path: /visitors
             Method: GET 
 
+  GetDashboardFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: get_dashboard/
+      Handler: app.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref VisitorProfilesTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref VisitorEventsTable
+      Environment:
+        Variables:
+          TABLE_PROFILES: !Ref VisitorProfilesTable
+          TABLE_EVENTS:   !Ref VisitorEventsTable
+          DASHBOARD_SECRET: "{{resolve:ssm:/cloud-resume/dashboard-secret}}"
+      Events:
+        DashboardAPI:
+          Type: Api
+          Properties:
+            Path: /dashboard
+            Method: GET
+
   VisitorProfilesTable:
     Type: AWS::DynamoDB::Table
     Properties:
