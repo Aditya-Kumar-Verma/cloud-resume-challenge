@@ -10,8 +10,8 @@ Globals:
       LogFormat: JSON
   Api:
     Cors:
-      AllowMethods: "'GET,PUT,OPTIONS'"
-      AllowHeaders: "'Content-Type'"
+      AllowMethods: "'GET,PUT,POST,OPTIONS'"
+      AllowHeaders: "'Content-Type,X-Dashboard-Key'"
       AllowOrigin: "'*'"
       
 Resources:
