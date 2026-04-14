@@ -159,7 +159,7 @@ Resources:
         Variables:
           TABLE_PROFILES: !Ref VisitorProfilesTable
           TABLE_EVENTS:   !Ref VisitorEventsTable
-          DASHBOARD_SECRET: "{{resolve:ssm:/cloud-resume/dashboard-secret}}"
+          DASHBOARD_SECRET: "{{resolve:ssm--secure:/cloud-resume/dashboard-secret}}"
       Events:
         DashboardAPI:
           Type: Api
