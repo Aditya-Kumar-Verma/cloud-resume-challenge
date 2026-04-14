@@ -150,23 +150,31 @@ Resources:
       Runtime: python3.11
       Architectures:
         - x86_64
+
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref VisitorProfilesTable
         - DynamoDBReadPolicy:
             TableName: !Ref VisitorEventsTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameter
+              Resource: arn:aws:ssm:ap-south-1:664418983304:parameter/cloud-resume/*
+
       Environment:
         Variables:
           TABLE_PROFILES: !Ref VisitorProfilesTable
-          TABLE_EVENTS:   !Ref VisitorEventsTable
-          DASHBOARD_SECRET: "{{resolve:ssm-secure:/cloud-resume/dashboard-secret}}"
+          TABLE_EVENTS: !Ref VisitorEventsTable
+          DASHBOARD_SECRET_NAME: "/cloud-resume/dashboard-secret"
+
       Events:
         DashboardAPI:
           Type: Api
           Properties:
             Path: /dashboard
             Method: GET
-
+          
   VisitorProfilesTable:
     Type: AWS::DynamoDB::Table
     Properties:

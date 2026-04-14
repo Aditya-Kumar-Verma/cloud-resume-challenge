@@ -4,7 +4,18 @@ import json
 from collections import defaultdict
 from datetime import datetime
 
-DASHBOARD_SECRET = os.environ.get("DASHBOARD_SECRET", "")
+ssm = boto3.client("ssm")
+
+def get_secret():
+    name = os.environ.get("DASHBOARD_SECRET_NAME", "")
+    if not name:
+        return ""
+
+    response = ssm.get_parameter(
+        Name=name,
+        WithDecryption=True
+    )
+    return response["Parameter"]["Value"]
 
 def lambda_handler(event, context):
     headers = {
@@ -17,7 +28,9 @@ def lambda_handler(event, context):
         return {"statusCode": 204, "headers": headers, "body": ""}
 
     provided_key = (event.get("headers") or {}).get("x-dashboard-key", "")
-    if provided_key != DASHBOARD_SECRET or not DASHBOARD_SECRET:
+    actual_secret = get_secret()
+
+    if provided_key != actual_secret:
         return {
             "statusCode": 401,
             "headers": headers,
