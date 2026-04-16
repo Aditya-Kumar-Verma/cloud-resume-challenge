@@ -13,6 +13,17 @@ Globals:
       AllowMethods: "'GET,PUT,POST,OPTIONS'"
       AllowHeaders: "'Content-Type,X-Dashboard-Key'"
       AllowOrigin: "'*'"
+
+  HttpApi:
+    CorsConfiguration:
+      AllowOrigins:
+        - "*"
+      AllowHeaders:
+        - "*"
+      AllowMethods:
+        - GET
+        - POST
+        - OPTIONS    
       
 Resources:
 
