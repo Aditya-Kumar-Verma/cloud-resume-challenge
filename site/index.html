@@ -911,6 +911,43 @@ footer {
             console.error("Visitor counter error:", err);
             counterElement.innerText = "—";
           });
+
+          // Fire-and-forget visitor tracking
+          const TRACK_API = "https://1xmeflp308.execute-api.ap-south-1.amazonaws.com/track";
+
+          function sendTrackingData(lat, lon) {
+            fetch(TRACK_API, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ua: navigator.userAgent,
+                path: window.location.pathname,
+                referrer: document.referrer || "",
+                lat: lat,
+                lon: lon
+              })
+            }).catch(() => {});
+          }
+
+          // Try precise location
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+              (pos) => {
+                console.log("Precise location used");
+                sendTrackingData(pos.coords.latitude, pos.coords.longitude);
+              },
+              () => {
+                console.log("Fallback to IP location");
+                sendTrackingData(null, null);
+              },
+              {
+                timeout: 5000,
+                maximumAge: 300000
+              }
+            );
+          } else {
+            sendTrackingData(null, null);
+          }
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
