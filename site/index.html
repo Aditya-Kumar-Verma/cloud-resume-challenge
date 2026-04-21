@@ -196,6 +196,12 @@
   width: 48%;
 }
 
+@keyframes pulse {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
 /* Mobile responsive stacking (below 992px) */
 @media (max-width: 992px) {
   .two-column-container {
@@ -449,6 +455,10 @@ footer {
   }
 
   header, footer, .print-button, .seamless-section {
+    display: none !important;
+  }
+
+  #dashboard-section {
     display: none !important;
   }
 
@@ -824,93 +834,82 @@ footer {
         <!-- Dashboard content (hidden until unlocked) -->
         <div id="dashboard-content" style="display:none;">
 
+          <!-- ✅ LIVE INDICATOR -->
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1rem;">
+            <span style="
+              width:8px;
+              height:8px;
+              background:#22c55e;
+              border-radius:50%;
+              display:inline-block;
+              animation:pulse 1.5s infinite;
+            "></span>
+            <span style="font-size:0.85rem; color:#6b7280;">
+              Live visitor data
+            </span>
+          </div>
+
+          <p id="last-updated" style="font-size:0.8rem; color:#9ca3af; margin-bottom:0.5rem;"></p>
+
         <!-- Stat cards -->
         <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
                     gap:1rem; margin-bottom:2rem;">
-        <div class="dash-card">
-          <div class="dash-label">Total visits</div>
-          <div class="dash-value" id="d-total-visits">—</div>
+          <div class="dash-card"><div class="dash-label">Total visits</div><div class="dash-value" id="d-total-visits">—</div></div>
+          <div class="dash-card"><div class="dash-label">Unique visitors</div><div class="dash-value" id="d-unique">—</div></div>
+          <div class="dash-card"><div class="dash-label">Returning</div><div class="dash-value" id="d-returning">—</div></div>
+          <div class="dash-card"><div class="dash-label">New visitors</div><div class="dash-value" id="d-new">—</div></div>
         </div>
-        <div class="dash-card">
-          <div class="dash-label">Unique visitors</div>
-          <div class="dash-value" id="d-unique">—</div>
+
+        <!-- World map -->
+        <h3 style="font-size:1rem;font-weight:600;margin-bottom:0.75rem;color:var(--primary-text);">Visitor locations</h3>
+        <div id="visitor-map" style="width:100%;background:#f0f4f8;border-radius:12px;overflow:hidden;margin-bottom:2rem;"></div>
+
+        <!-- Chart -->
+        <h3 style="font-size:1rem;font-weight:600;margin-bottom:0.75rem;color:var(--primary-text);">Visits over time (last 30 days)</h3>
+        <div style="position:relative;width:100%;height:220px;margin-bottom:2rem;">
+          <canvas id="visits-chart"></canvas>
         </div>
-        <div class="dash-card">
-          <div class="dash-label">Returning</div>
-          <div class="dash-value" id="d-returning">—</div>
+
+        <!-- Tables -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1rem;">
+          <div>
+            <h3 style="font-size:1rem;font-weight:600;margin-bottom:0.75rem;color:var(--primary-text);">Top countries</h3>
+            <table class="dash-table" id="countries-table">
+              <thead><tr><th>Country</th><th>Visits</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div>
+            <h3 style="font-size:1rem;font-weight:600;margin-bottom:0.75rem;color:var(--primary-text);">Top cities</h3>
+            <table class="dash-table" id="cities-table">
+              <thead><tr><th>City</th><th>Visits</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
-        <div class="dash-card">
-          <div class="dash-label">New visitors</div>
-          <div class="dash-value" id="d-new">—</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- World map -->
-    <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
-      Visitor locations
-    </h3>
-    <div id="visitor-map" style="width:100%; background:#f0f4f8; border-radius:12px;
-         overflow:hidden; margin-bottom:2rem;"></div>
-
-    <!-- Visits over time chart -->
-    <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
-      Visits over time (last 30 days)
-    </h3>
-    <div style="position:relative; width:100%; height:220px; margin-bottom:2rem;">
-      <canvas id="visits-chart"></canvas>
-    </div>
-
-    <!-- Two-column tables -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1rem;">
-
-      <div>
-        <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
-          Top countries
-        </h3>
-        <table class="dash-table" id="countries-table">
-          <thead><tr><th>Country</th><th>Visits</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <div>
-        <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.75rem; color:var(--primary-text);">
-          Top cities
-        </h3>
-        <table class="dash-table" id="cities-table">
-          <thead><tr><th>City</th><th>Visits</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-</section>
+      </div>  <!-- closes dashboard-content -->
+    </section>
 
         <!-- Visitor Counter Script -->
         <script>
           const counterElement = document.getElementById("visitor-count");
-            counterElement.innerText = "Loading...";
+            counterElement.innerHTML = "<span style='opacity:0.6;'>Loading...</span>";
 
           const API = "https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/visitors";
 
             fetch(API, { method: "PUT" })
-            .then(res => {
-              if (!res.ok) throw new Error("PUT failed");
-              return fetch(API);
-          })
-            .then(res => {
-              if (!res.ok) throw new Error("GET failed");
-              return res.json();
-          })
-            .then(data => {
-            counterElement.innerText = data.count;
-          })
-            .catch(err => {
-            console.error("Visitor counter error:", err);
-            counterElement.innerText = "—";
-          });
+              .then(res => {
+                if (!res.ok) throw new Error("PUT failed");
+                return res.json();
+              })
+              .then(data => {
+                counterElement.innerText = data.count;
+              })
+              .catch(err => {
+                console.error("Visitor counter error:", err);
+                counterElement.innerHTML = "<span style='color:#ef4444;'>Error</span>";
+              });
 
           // Fire-and-forget visitor tracking
           const TRACK_API = "https://1xmeflp308.execute-api.ap-south-1.amazonaws.com/track";
@@ -933,11 +932,9 @@ footer {
           if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
               (pos) => {
-                console.log("Precise location used");
                 sendTrackingData(pos.coords.latitude, pos.coords.longitude);
               },
               () => {
-                console.log("Fallback to IP location");
                 sendTrackingData(null, null);
               },
               {
@@ -956,7 +953,8 @@ footer {
 
         <script>
         const DASHBOARD_API = "https://g1qkvod29i.execute-api.ap-south-1.amazonaws.com/Prod/dashboard";
-
+        let lastLocations = [];
+        let visitsChart;
         function unlockDashboard() {
           const pw = document.getElementById("dashboard-password").value;
           const err = document.getElementById("dashboard-error");
@@ -971,27 +969,65 @@ footer {
             return r.json();
           })
           .then(data => {
+            const content = document.getElementById("dashboard-content");
+
             document.getElementById("dashboard-lock").style.display = "none";
-            document.getElementById("dashboard-content").style.display = "block";
+            content.style.display = "block";
             renderDashboard(data);
           })
           .catch(e => {
+            const err = document.getElementById("dashboard-error");
+            const content = document.getElementById("dashboard-content");
+
             if (e.message === "unauthorized") {
               err.style.display = "block";
             } else {
-              err.textContent = "Failed to load dashboard. Try again.";
-              err.style.display = "block";
+              content.style.display = "block";
+              content.innerHTML = `
+                <div style="text-align:center; padding:2rem;">
+                  <p style="color:#e74c3c; font-weight:600;">Failed to load dashboard</p>
+                  <p style="color:#6b7280; font-size:0.9rem;">Please try again later.</p>
+                </div>
+              `;
             }
           });
       }
+        
+        function animateValue(id, end) {
+          const el = document.getElementById(id);
+          if (!el) return;              // guard against wiped elements
+          if (end === 0) {              // guard against infinite loop
+            el.textContent = "0";
+            return;
+          }
+          let start = 0;
+          const duration = 800;
+          const stepTime = 20;
+          const increment = Math.ceil(end / (duration / stepTime));
+
+          const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+              el.textContent = end.toLocaleString();
+              clearInterval(timer);
+            } else {
+              el.textContent = start.toLocaleString();
+            }
+          }, stepTime);
+        }
 
         function renderDashboard(data) {
-          // Stat cards
-          document.getElementById("d-total-visits").textContent = data.total_visits.toLocaleString();
-          document.getElementById("d-unique").textContent       = data.total_unique.toLocaleString();
-          document.getElementById("d-returning").textContent    = data.returning.toLocaleString();
-          document.getElementById("d-new").textContent          = data.new_visitors.toLocaleString();
 
+          const content = document.getElementById("dashboard-content");
+
+          document.getElementById("last-updated").textContent =
+            "Last updated: " + new Date().toLocaleTimeString();
+          lastLocations = data.locations;
+          // Stat cards
+          animateValue("d-total-visits", data.total_visits);
+          animateValue("d-unique", data.total_unique);
+          animateValue("d-returning", data.returning);
+          animateValue("d-new", data.new_visitors);
           // World map with D3
           renderMap(data.locations);
 
@@ -1004,10 +1040,25 @@ footer {
       }
 
       function renderMap(locations) {
+        d3.select("#visitor-map").selectAll("*").remove();
         const container = document.getElementById("visitor-map");
         const W = container.clientWidth || 700;
         const H = Math.round(W * 0.5);
+        let tooltip = d3.select(".map-tooltip");
 
+        if (tooltip.empty()) {
+          tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "map-tooltip")
+            .style("position", "absolute")
+            .style("background", "#1e293b")
+            .style("color", "#fff")
+            .style("padding", "6px 10px")
+            .style("border-radius", "6px")
+            .style("font-size", "12px")
+            .style("display", "none")
+            .style("pointer-events", "none");
+        }
         const svg = d3.select("#visitor-map")
           .append("svg")
           .attr("width", "100%")
@@ -1040,57 +1091,114 @@ footer {
             .data(locations)
             .join("circle")
             .attr("cx", d => {
+              if (!d.lon || !d.lat) return null;
               const coords = projection([d.lon, d.lat]);
               return coords ? coords[0] : null;
             })
             .attr("cy", d => {
+              if (!d.lon || !d.lat) return null;
               const coords = projection([d.lon, d.lat]);
               return coords ? coords[1] : null;
             })
             .attr("r", d => rScale(d.visits))
             .attr("fill", "#3b82f6")
-            .attr("fill-opacity", 0.65)
-            .attr("stroke", "#1d4ed8")
-            .attr("stroke-width", 0.8)
-            .append("title")
-            .text(d => `${d.city}, ${d.country}: ${d.visits} visit${d.visits !== 1 ? "s" : ""}`);
+            .attr("opacity", 0.7)
+            .style("cursor", "pointer")
+            .on("mouseover", function (event, d) {
+              d3.select(this)
+                .attr("opacity", 1)
+                .attr("stroke", "#1e293b")
+                .attr("stroke-width", 1.5);
+
+              tooltip
+                .style("display", "block")
+                .html(`<strong>${d.city}, ${d.country}</strong><br>${d.visits} visits`)
+                .style("left", Math.min(event.pageX + 10, window.innerWidth - 160) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", function () {
+              d3.select(this)
+                .attr("opacity", 0.7)
+                .attr("stroke", "none");
+            });
+            
         });
       }
 
       function renderChart(data) {
-        new Chart(document.getElementById("visits-chart"), {
+        const ctx = document.getElementById("visits-chart").getContext("2d");
+
+        const labels = data.map(d => d.date);
+        const counts = data.map(d => d.visits);
+
+        // Gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 250);
+        gradient.addColorStop(0, "rgba(59,130,246,0.4)");
+        gradient.addColorStop(1, "rgba(59,130,246,0)");
+
+        if (visitsChart) {
+          visitsChart.destroy();
+        }
+
+        visitsChart = new Chart(ctx, {
           type: "line",
           data: {
-            labels: data.map(d => d.date),
+            labels: labels,
             datasets: [{
               label: "Visits",
-              data: data.map(d => d.visits),
+              data: counts,
               borderColor: "#3b82f6",
-              backgroundColor: "rgba(59,130,246,0.08)",
-              borderWidth: 2,
-              pointRadius: 3,
+              backgroundColor: gradient,
               fill: true,
-              tension: 0.3
+              tension: 0.4,
+              borderWidth: 2,
+              pointRadius: 4,
+              pointHoverRadius: 6,
+              pointBackgroundColor: (ctx) => {
+                return ctx.dataIndex === counts.length - 1 ? "#ef4444" : "#3b82f6";
+              }
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "#1e293b",
+                titleColor: "#fff",
+                bodyColor: "#fff",
+                padding: 10
+              }
+            },
+            animation: {
+              duration: 1200,
+              easing: "easeOutQuart"
+            },
             scales: {
               x: {
-                ticks: { maxRotation: 45, font: { size: 11 } },
-                grid: { color: "rgba(0,0,0,0.05)" }
+                grid: { display: false }
               },
               y: {
                 beginAtZero: true,
-                ticks: { precision: 0, font: { size: 11 } },
-                grid: { color: "rgba(0,0,0,0.05)" }
-        }
+                ticks: { stepSize: 1 }
+              }
+            }
+          }
+        });
       }
-    }
-  });
-}
+
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const dashboardVisible =
+            document.getElementById("dashboard-content").style.display === "block";
+          if (dashboardVisible && lastLocations.length > 0) {
+            renderMap(lastLocations);
+          }
+        }, 250);
+      });
 
       function renderTable(tableId, rows, nameKey, valueKey) {
         const tbody = document.querySelector(`#${tableId} tbody`);
@@ -1099,32 +1207,47 @@ footer {
           tbody.innerHTML = '<tr><td colspan="2" style="color:#9ca3af;font-size:0.85rem;">No data yet</td></tr>';
           return;
         }
-        rows.forEach(row => {
+        rows.forEach((row, index) => {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${row[nameKey]}</td><td>${row[valueKey].toLocaleString()}</td>`;
+
+          const tdName = document.createElement("td");
+          const rankSpan = document.createElement("span");
+          rankSpan.style.cssText = "color:#9ca3af; margin-right:6px;";
+          rankSpan.textContent = `#${index + 1}`;
+          tdName.appendChild(rankSpan);
+          tdName.appendChild(document.createTextNode(row[nameKey]));
+
+          const tdValue = document.createElement("td");
+          tdValue.style.cssText = "color:#3b82f6; font-weight:600;";
+          tdValue.textContent = row[valueKey].toLocaleString();
+
+          tr.appendChild(tdName);
+          tr.appendChild(tdValue);
           tbody.appendChild(tr);
         });
       }
-  </script>
+        </script>
 
 </main>
 
 <script>
-  window.addEventListener("scroll", function () {
-  const header = document.querySelector(".sticky-header");
-  if (window.scrollY > 50) {
-    header.classList.add("shrink");
-  } else {
-    header.classList.remove("shrink");
-  }
-});
+    window.addEventListener("scroll", function () {
+      const header = document.querySelector(".sticky-header");
+      if (!header) return;
+
+      if (window.scrollY > 50) {
+        header.classList.add("shrink");
+      } else {
+        header.classList.remove("shrink");
+      }
+    });
 
 </script>
 
 <!-- Motivational Footer -->
 <footer>
   <div class="quote-section">
-    <p class="quote">“Technology is anything that wasn’t around when you were born.” – Alan Kay</p>
+    <p class="quote">"Technology is anything that wasn't around when you were born." – Alan Kay</p>
     <h2 class="goodbye">Have a <strong>nice day!</strong></h2>
   </div>
   <div class="footer-bar">
